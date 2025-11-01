@@ -12,3 +12,4 @@ D:\OPAM\GameStore\obj\Debug\net9.0\refint\GameStore.dll
 D:\OPAM\GameStore\obj\Debug\net9.0\GameStore.pdb
 D:\OPAM\GameStore\obj\Debug\net9.0\GameStore.genruntimeconfig.cache
 D:\OPAM\GameStore\obj\Debug\net9.0\ref\GameStore.dll
+D:\OPAM\GameStore\obj\Debug\net9.0\GameStore.sourcelink.json

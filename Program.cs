@@ -19,7 +19,7 @@ namespace GameStore
             Console.WriteLine("6. The Forest - 280 грн\n");
             Console.ResetColor();
 
-            int total = 0;
+            double total = 0;
 
             string answer = "так";
 
