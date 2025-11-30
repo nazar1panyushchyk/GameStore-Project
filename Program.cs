@@ -510,7 +510,9 @@ namespace GameStore
                 if (!selected.IsEmpty())
                 {
                     total += selected.Price;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Додано → {selected.Name} ({selected.Price} грн)");
+                    Console.ResetColor();
                 }
 
                 Console.Write("Бажаєте додати ще щось? (так/ні): ");
