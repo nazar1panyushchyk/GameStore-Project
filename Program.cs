@@ -738,13 +738,7 @@ namespace GameStore
             Console.WriteLine("\nНатисніть будь-яку клавішу для повернення...");
             Console.ReadKey(true);
         }
-
-
-
-
-
-
-
+        
         static void Orders()
         {
             Console.Clear();
