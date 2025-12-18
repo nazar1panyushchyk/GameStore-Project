@@ -1,6 +1,6 @@
 namespace GameStore.Models
 {
-    public struct Client
+    public class Client
     {
         public int Id;
         public string Name;
