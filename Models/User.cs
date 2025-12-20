@@ -8,9 +8,9 @@ namespace GameStore.Models
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        public User()
-        {
-        }
+        // public User()
+        // {
+        // }
 
         public User(int id, string email, string passwordHash)
         {

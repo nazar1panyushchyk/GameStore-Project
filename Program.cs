@@ -421,14 +421,12 @@ namespace GameStore
             int idToDelete = ReadInt("Введіть ID гри для видалення: ", 1, games.Count);
             games.RemoveAt(idToDelete - 1);
 
-            // Перезаписуємо ID
             for (int i = 0; i < games.Count; i++)
             {
                 Game g = games[i];
                 games[i] = new Game(i + 1, g.Name, g.Genre, g.Rating, g.Price);
             }
 
-            // Перезаписуємо весь файл
             string path = Path.Combine(CsvFolder, "games.csv");
             using (StreamWriter sw = new StreamWriter(path))
             {
@@ -486,7 +484,6 @@ namespace GameStore
                 return;
             }
 
-            // Вибір сортування
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Оберіть метод сортування:");
             Console.WriteLine("1. Вбудоване сортування за ціною");
@@ -733,7 +730,6 @@ namespace GameStore
                 clients[i] = new Client(i + 1, c.Name, c.Email);
             }
 
-            // Перезаписуємо весь файл
             string path = Path.Combine(CsvFolder, "clients.csv");
             using (StreamWriter sw = new StreamWriter(path))
             {
@@ -850,7 +846,6 @@ namespace GameStore
                 Random randomDiscount = new Random();
                 double discount = randomDiscount.Next(5, 16);
 
-                // build GameIds string (use '|' as separator to avoid colliding with CSV commas)
                 string gameIds = "";
                 for (int i = 0; i < currentOrder.Count; i++)
                 {
@@ -863,7 +858,7 @@ namespace GameStore
                 newOrder.TotalPrice = total;
                 newOrder.ClientId = 0;
 
-                // assign incremental Id based on existing history
+               
                 int maxId = 0;
                 foreach (var o in BuyHistoryMenu)
                     if (o.Id > maxId) maxId = o.Id;
