@@ -197,7 +197,6 @@ public class CsvService
             if (parts.Length < 5)
                 continue;
 
-            // safe parsing
             if (!int.TryParse(parts[0], out int id))
                 continue;
             if (!int.TryParse(parts[1], out int clientId))
@@ -210,7 +209,6 @@ public class CsvService
             double.TryParse(parts[3].Replace(".", ","), out discount);
             double.TryParse(parts[4].Replace(".", ","), out totalPrice);
 
-            // skip placeholder/empty rows (Id == 0 and no games and zero total)
             if (id == 0 && (string.IsNullOrWhiteSpace(gameIds) || totalPrice == 0))
                 continue;
 
