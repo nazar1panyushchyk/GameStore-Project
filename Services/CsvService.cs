@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using GameStore.Models;
 
+/// <summary>
+/// Сервіс для роботи з CSV-файлами.
+/// Забезпечує читання та запис даних про ігри, клієнтів, користувачів та замовлення.
+/// </summary>
 public class CsvService
 {
     private string folderPath;
 
+    /// <summary>
+    /// Ініціалізує новий екземпляр сервісу та перевіряє наявність робочої директорії.
+    /// </summary>
+    /// <param name="folderPath">Шлях до папки з файлами даних.</param>
     public CsvService(string folderPath)
     {
         this.folderPath = folderPath;
@@ -14,6 +22,11 @@ public class CsvService
             Directory.CreateDirectory(folderPath);
     }
 
+    /// <summary>
+    /// Додає новий запис про гру в кінець файлу games.csv.
+    /// Якщо файл не існує, створює його та додає заголовок.
+    /// </summary>
+    /// <param name="g">Об'єкт гри, який необхідно зберегти.</param>
     public void AddGame(Game g)
     {
         string path = Path.Combine(folderPath, "games.csv");
@@ -32,6 +45,11 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Зчитує повний список ігор з файлу games.csv.
+    /// Виконує парсинг текстових рядків у об'єкти класу Game.
+    /// </summary>
+    /// <returns>Список об'єктів Game або порожній список, якщо файл відсутній.</returns>
     public List<Game> GetAllGames()
     {
         string path = Path.Combine(folderPath, "games.csv");
@@ -51,6 +69,10 @@ public class CsvService
         return games;
     }
 
+    /// <summary>
+    /// Оновлює інформацію про існуючого клієнта у файлі clients.csv.
+    /// </summary>
+    /// <param name="updatedClient">Об'єкт клієнта з оновленими даними.</param>
     public void UpdateGame(Game g)
     {
         string path = Path.Combine(folderPath, "games.csv");
@@ -75,6 +97,11 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Видаляє гру з файлу games.csv за її ідентифікатором.
+    /// Зчитує всі ігри, видаляє потрібну та повністю перезаписує файл.
+    /// </summary>
+    /// <param name="id">Ідентифікатор гри для видалення.</param>
     public void DeleteGame(int id)
     {
         string path = Path.Combine(folderPath, "games.csv");
@@ -93,6 +120,11 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Додає нового клієнта до файлу clients.csv.
+    /// Створює файл із заголовками, якщо він ще не існує.
+    /// </summary>
+    /// <param name="c">Об'єкт клієнта, який потрібно зберегти.</param>
     public void AddClient(Client c)
     {
         string path = Path.Combine(folderPath, "clients.csv");
@@ -109,6 +141,9 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Зчитує всіх клієнтів з файлу clients.csv.
+    /// </summary>
     public List<Client> GetAllClients()
     {
         string path = Path.Combine(folderPath, "clients.csv");
@@ -128,6 +163,9 @@ public class CsvService
         return clients;
     }
 
+    /// <summary>
+    /// Оновлює дані клієнта у файлі.
+    /// </summary>
     public void UpdateClient(Client c)
     {
         string path = Path.Combine(folderPath, "clients.csv");
@@ -148,6 +186,11 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Видаляє клієнта з файлу clients.csv за його ідентифікатором.
+    /// Після видалення перезаписує файл для збереження актуального стану.
+    /// </summary>
+    /// <param name="id">Ідентифікатор клієнта для видалення.</param>
     public void DeleteClient(int id)
     {
         string path = Path.Combine(folderPath, "clients.csv");
@@ -166,6 +209,10 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Зберігає інформацію про нове замовлення у файл orders.csv.
+    /// </summary>
+    /// <param name="order">Об'єкт замовлення для запису.</param>
     public void AddOrder(Order o)
     {
         string path = Path.Combine(folderPath, "orders.csv");
@@ -182,6 +229,9 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Зчитує історію замовлень з файлу orders.csv.
+    /// </summary>
     public List<Order> GetAllOrders()
     {
         string path = Path.Combine(folderPath, "orders.csv");
@@ -226,6 +276,9 @@ public class CsvService
         return orders;
     }
 
+    /// <summary>
+    /// Зберігає повний список замовлень у файл, перезаписуючи його.
+    /// </summary>
     public void SaveAllOrders(List<Order> orders)
     {
         string path = Path.Combine(folderPath, "orders.csv");
@@ -239,6 +292,11 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Зчитує список усіх зареєстрованих користувачів (адміністраторів) з файлу users.csv.
+    /// Виконує перевірку на коректність даних у рядках файлу.
+    /// </summary>
+    /// <returns>Список об'єктів User.</returns>
     public List<User> GetAllUsers()
     {
         string path = Path.Combine(folderPath, "users.csv");
@@ -264,6 +322,10 @@ public class CsvService
         return users;
     }
 
+    /// <summary>
+    /// Реєструє нового користувача в системі, додаючи запис у файл users.csv.
+    /// </summary>
+    /// <param name="u">Об'єкт користувача з логіном та паролем.</param>
     public void AddUser(User u)
     {
         string path = Path.Combine(folderPath, "users.csv");
@@ -280,6 +342,12 @@ public class CsvService
         }
     }
 
+    /// <summary>
+    /// Перевіряє, чи існує користувач із вказаною електронною поштою.
+    /// Використовується при реєстрації для уникнення дублікатів.
+    /// </summary>
+    /// <param name="email">Email для перевірки.</param>
+    /// <returns>True, якщо користувач вже існує, інакше False.</returns>
     public bool UserExists(string email)
     {
         var users = GetAllUsers();
@@ -291,6 +359,9 @@ public class CsvService
         return false;
     }
 
+    /// <summary>
+    /// Знаходить користувача (адміністратора) за email для авторизації.
+    /// </summary>
     public User GetUserByEmail(string email)
     {
         var users = GetAllUsers();

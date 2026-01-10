@@ -3,6 +3,9 @@ using System.IO;
 
 namespace GameStore.Services
 {
+    /// <summary>
+    /// Допоміжний клас для генерації унікальних ідентифікаторів.
+    /// </summary>
     public class IdGenerator
     {
         private string folderPath;
@@ -10,11 +13,17 @@ namespace GameStore.Services
         public IdGenerator(string folder)
         {
             folderPath = folder;
-            
+
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
         }
 
+        /// <summary>
+        /// Визначає наступний доступний ID для запису у вказаному файлі.
+        /// Аналізує існуючі ID та повертає значення на 1 більше від максимального.
+        /// </summary>
+        /// <param name="fileName">Назва файлу (наприклад, "games.csv").</param>
+        /// <returns>Унікальний цілочисельний ідентифікатор.</returns>
         public int GetNextId(string fileName)
         {
             string path = Path.Combine(folderPath, fileName);

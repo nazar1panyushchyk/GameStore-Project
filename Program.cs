@@ -31,16 +31,25 @@ namespace GameStore
         private static List<Order> BuyHistoryMenu = new List<Order>();
 
 
+
         // private static int nextClientId = 1;
 
+        /// <summary>
+        /// Головна точка входу в програму.
+        /// Відповідає за створення необхідних директорій, завантаження даних
+        /// та запуск циклу авторизації користувача.
+        /// </summary>
         static void Main()
         {
+
             Directory.CreateDirectory(CsvFolder);
 
             LoadData();
 
             int attempts = 3;
             bool loggedIn = false;
+
+            Console.Clear();
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("=== Вітаємо в GameStore! ===\n");
@@ -118,6 +127,10 @@ namespace GameStore
             }
         }
 
+        /// <summary>
+        /// Здійснює завантаження даних про ігри та клієнтів із CSV-файлів у оперативну пам'ять.
+        /// Використовує методи CsvService для читання файлів.
+        /// </summary>
         static void LoadData()
         {
             Games = csvService.GetAllGames();
@@ -125,6 +138,10 @@ namespace GameStore
             BuyHistoryMenu = csvService.GetAllOrders();
         }
 
+        /// <summary>
+        /// Зберігає поточні зміни в списках ігор та клієнтів назад у CSV-файли.
+        /// Викликається перед завершенням роботи програми.
+        /// </summary>
         static void SaveData()
         {
             foreach (var g in Games)
@@ -133,6 +150,10 @@ namespace GameStore
                 csvService.UpdateClient(c);
         }
 
+        /// <summary>
+        /// Відображає меню управління каталогом ігор.
+        /// Надає доступ до перегляду, додавання, редагування, видалення та пошуку.
+        /// </summary>
         static void GameList()
         {
             Console.Clear();
@@ -180,7 +201,9 @@ namespace GameStore
             }
         }
 
-
+        /// <summary>
+        /// Виводить на екран повний список ігор у вигляді форматованої таблиці.
+        /// </summary>
         static void ShowGameList()
         {
             Console.Clear();
@@ -208,6 +231,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Виводить на екран повний список ігор у вигляді форматованої таблиці.
+        /// </summary>
         static void ShowGameList(List<Game> list)
         {
             foreach (var game in list)
@@ -216,7 +242,10 @@ namespace GameStore
             }
         }
 
-
+        /// <summary>
+        /// Виводить форматовану таблицю всіх ігор із заголовками.
+        /// Використовується як допоміжний метод перед операціями редагування або видалення.
+        /// </summary>
         static void ShowGamesTable()
         {
             Console.Clear();
@@ -242,14 +271,10 @@ namespace GameStore
         }
 
 
-
-        // static void ShowGameListExit()
-        // {
-        //     ShowGameList();
-        //     Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутися в меню...");
-        //     Console.ReadKey(true);
-        // }
-
+        /// <summary>
+        /// Додає нові ігри до каталогу.
+        /// Перевіряє ліміт на кількість ігор (максимум 5) та запитує дані у користувача.
+        /// </summary>
         static void AddGames()
         {
             Console.Clear();
@@ -292,6 +317,12 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Допоміжний метод для створення об'єкта гри на основі введених користувачем даних.
+        /// Виконує валідацію числових полів (рейтинг, ціна).
+        /// </summary>
+        /// <param name="number">Унікальний ідентифікатор нової гри.</param>
+        /// <returns>Створений об'єкт класу Game.</returns>
         static Game CreateGame(int number)
         {
             Console.Clear();
@@ -330,6 +361,10 @@ namespace GameStore
             return new Game(number, name, genre, rating, (decimal)price);
         }
 
+        /// <summary>
+        /// Дозволяє редагувати параметри існуючої гри (назва, жанр, рейтинг, ціна).
+        /// Змінює лише ті поля, які користувач вирішив оновити.
+        /// </summary>
         static void EditGame()
         {
             Console.Clear();
@@ -399,8 +434,10 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
-
+        /// <summary>
+        /// Видаляє гру з каталогу за її ідентифікатором.
+        /// Виконує переіндексацію (зсув ID) залишених ігор для збереження порядку.
+        /// </summary>
         static void DeleteGame()
         {
             Console.Clear();
@@ -448,7 +485,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
+        /// <summary>
+        /// Виконує пошук гри за частковим співпадінням назви.
+        /// </summary>
         static void SearchGame()
         {
             Console.Clear();
@@ -471,6 +510,10 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Сортує список ігор за ціною.
+        /// Дозволяє вибрати між вбудованим методом Sort та алгоритмом "бульбашки".
+        /// </summary>
         static void SortGames()
         {
             Console.Clear();
@@ -525,6 +568,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Відображає меню управління базою клієнтів.
+        /// </summary>
         static void ClientsMenu()
         {
             bool back = false;
@@ -572,8 +618,10 @@ namespace GameStore
         }
 
 
-
-
+        /// <summary>
+        /// Додає нового клієнта до системи.
+        /// Генерує новий ID та зберігає введені ім'я та email.
+        /// </summary>
         static void AddClient()
         {
             Console.Clear();
@@ -595,7 +643,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
+        /// <summary>
+        /// Виводить список всіх клієнтів у табличному вигляді.
+        /// </summary>
         static void ShowClients()
         {
             Console.Clear();
@@ -628,6 +678,11 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Виводить переданий список клієнтів у спрощеному вигляді.
+        /// Використовується для відображення відсортованих списків.
+        /// </summary>
+        /// <param name="list">Список клієнтів для відображення.</param>
         static void ShowClients(List<Client> list)
         {
             foreach (var client in list)
@@ -636,7 +691,10 @@ namespace GameStore
             }
         }
 
-
+        /// <summary>
+        /// Очищає екран та виводить повну таблицю всіх клієнтів із заголовками.
+        /// Використовується в меню управління клієнтами.
+        /// </summary>
         static void ShowClientsList()
         {
             Console.Clear();
@@ -663,6 +721,9 @@ namespace GameStore
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Редагує дані обраного клієнта.
+        /// </summary>
         static void EditClient()
         {
             Console.Clear();
@@ -703,7 +764,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
+        /// <summary>
+        /// Видаляє клієнта з бази та оновлює файл, зберігаючи послідовність ID.
+        /// </summary>
         static void DeleteClient()
         {
             Console.Clear();
@@ -746,7 +809,10 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
+        /// <summary>
+        /// Сортує клієнтів за іменем в алфавітному порядку.
+        /// Реалізує вибір алгоритму сортування.
+        /// </summary>
         static void SortClients()
         {
             Console.Clear();
@@ -794,6 +860,10 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Реалізує процес оформлення замовлення.
+        /// Дозволяє обирати ігри зі списку, розраховує загальну суму та застосовує випадкову знижку.
+        /// </summary>
         static void Orders()
         {
             Console.Clear();
@@ -858,7 +928,7 @@ namespace GameStore
                 newOrder.TotalPrice = total;
                 newOrder.ClientId = 0;
 
-               
+
                 int maxId = 0;
                 foreach (var o in BuyHistoryMenu)
                     if (o.Id > maxId) maxId = o.Id;
@@ -881,6 +951,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Відображає список всіх здійснених платежів з деталізацією сум.
+        /// </summary>
         static void Payments()
         {
             Console.Clear();
@@ -930,9 +1003,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
-
-
+        /// <summary>
+        /// Показує детальну історію покупок, включаючи перелік ID товарів та знижки.
+        /// </summary>
         static void ShowBuyHistory()
         {
             Console.Clear();
@@ -975,8 +1048,10 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
-
+        /// <summary>
+        /// Відображає таблицю з рейтингами ігор.
+        /// Дозволяє швидко переглянути оцінки товарів у магазині.
+        /// </summary>
         static void Ratings()
         {
             Console.Clear();
@@ -1004,7 +1079,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
+        /// <summary>
+        /// Фільтрує список ігор за введеним жанром.
+        /// </summary>
         static void Filters()
         {
             Console.Clear();
@@ -1048,6 +1125,9 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Обчислює статистичні показники по асортименту ігор.
+        /// </summary>
         static void Statistics()
         {
             Console.Clear();
@@ -1094,7 +1174,10 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
+        /// <summary>
+        /// Формує та виводить на екран загальний звіт про діяльність магазину.
+        /// Включає статистику цін (мінімальна, максимальна, середня).
+        /// </summary>
         static void Report()
         {
             Console.Clear();
@@ -1145,7 +1228,13 @@ namespace GameStore
         }
 
 
-
+        /// <summary>
+        /// Безпечно зчитує ціле число з консолі в заданому діапазоні.
+        /// </summary>
+        /// <param name="message">Повідомлення для користувача.</param>
+        /// <param name="min">Мінімальне допустиме значення.</param>
+        /// <param name="max">Максимальне допустиме значення.</param>
+        /// <returns>Введене коректне число.</returns>
         static int ReadInt(string message, int min, int max)
         {
             int result;
@@ -1173,27 +1262,52 @@ namespace GameStore
             return result;
         }
 
+        /// <summary>
+        /// Зчитує рядкове значення з консолі, попередньо вивівши повідомлення.
+        /// </summary>
+        /// <param name="message">Текст запрошення для користувача.</param>
+        /// <returns>Введений користувачем рядок.</returns>
         static string ReadString(string message)
         {
             Console.Write(message);
             return Console.ReadLine();
         }
 
+        /// <summary>
+        /// Виводить інформацію про одну гру в рядок з роздільниками.
+        /// Використовується при пошуку та фільтрації.
+        /// </summary>
+        /// <param name="g">Об'єкт гри для виведення.</param>
         static void PrintGame(Game g)
         {
             Console.WriteLine($"Id: {g.Id} | Назва: {g.Name} | Жанр: {g.Genre} | Рейтинг: {g.Rating} | Ціна: {g.Price:F2} грн");
         }
 
+        /// <summary>
+        /// Виводить інформацію про одного клієнта в рядок.
+        /// </summary>
+        /// <param name="c">Об'єкт клієнта.</param>
         static void PrintClient(Client c)
         {
             Console.WriteLine($"Id: {c.Id} | Ім'я: {c.Name} | Email: {c.Email}");
         }
 
+        /// <summary>
+        /// Виводить форматований рядок таблиці для звіту про гру.
+        /// Використовується в методі Report для генерації фінальної таблиці.
+        /// </summary>
+        /// <param name="g">Об'єкт гри.</param>
         static void PrintGameReport(Game g)
         {
             Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7:F1} {4,-8:F2}", g.Id, g.Name, g.Genre, g.Rating, g.Price);
         }
 
+        /// <summary>
+        /// Реалізує алгоритм сортування бульбашкою для списку ігор.
+        /// Сортує ігри за зростанням ціни.
+        /// </summary>
+        /// <param name="list">Вхідний список ігор.</param>
+        /// <returns>Новий відсортований список ігор.</returns>
         static List<Game> BubbleSortGamesByPrice(List<Game> list)
         {
             List<Game> sortedList = new List<Game>(list);
@@ -1213,6 +1327,12 @@ namespace GameStore
             return sortedList;
         }
 
+        /// <summary>
+        /// Реалізує алгоритм сортування бульбашкою для списку клієнтів.
+        /// Сортує клієнтів за іменем в алфавітному порядку.
+        /// </summary>
+        /// <param name="list">Вхідний список клієнтів.</param>
+        /// <returns>Новий відсортований список клієнтів.</returns>
         static List<Client> BubbleSortClientsByName(List<Client> list)
         {
             List<Client> sortedList = new List<Client>(list);
@@ -1232,6 +1352,12 @@ namespace GameStore
             return sortedList;
         }
 
+        /// <summary>
+        /// Здійснює процедуру входу користувача в систему.
+        /// Перевіряє відповідність введеного email та пароля збереженим даним.
+        /// </summary>
+        /// <param name="attempts">Кількість доступних спроб для введення пароля.</param>
+        /// <returns>True, якщо вхід успішний; інакше False.</returns>
         static bool LoginUser(int attempts)
         {
             do
@@ -1263,6 +1389,12 @@ namespace GameStore
             return false;
         }
 
+        /// <summary>
+        /// Реєструє нового користувача в системі.
+        /// Перевіряє унікальність email та співпадіння паролів при введенні.
+        /// </summary>
+        /// <param name="attempts">Кількість спроб для підтвердження пароля.</param>
+        /// <returns>Результат автоматичного входу після успішної реєстрації.</returns>
         static bool RegisterUser(int attempts)
         {
             Console.Clear();
