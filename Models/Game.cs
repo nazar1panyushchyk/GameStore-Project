@@ -5,14 +5,8 @@ namespace GameStore.Models
     /// </summary>
     public class Game
     {
-        public int Id;
-        public string Name;
-        public string Genre;
-        public double Rating;
-        public decimal Price;
-
         /// <summary>
-        /// Ініціалізує новий екземпляр гри.
+        /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
         /// <param name="id">Унікальний ідентифікатор.</param>
         /// <param name="name">Назва гри.</param>
@@ -27,6 +21,16 @@ namespace GameStore.Models
             Rating = rating;
             Price = price;
         }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Genre { get; set; }
+
+        public double Rating { get; set; }
+
+        public decimal Price { get; set; }
 
         /// <summary>
         /// Перевіряє, чи є об'єкт гри порожнім (некоректним).

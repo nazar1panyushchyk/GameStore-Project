@@ -1,0 +1,15 @@
+D:\OPAM\GameStore\bin\Release\net10.0\GameStore.exe
+D:\OPAM\GameStore\bin\Release\net10.0\GameStore.deps.json
+D:\OPAM\GameStore\bin\Release\net10.0\GameStore.runtimeconfig.json
+D:\OPAM\GameStore\bin\Release\net10.0\GameStore.dll
+D:\OPAM\GameStore\bin\Release\net10.0\GameStore.pdb
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.GeneratedMSBuildEditorConfig.editorconfig
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.AssemblyInfoInputs.cache
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.AssemblyInfo.cs
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.csproj.CoreCompileInputs.cache
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.sourcelink.json
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.dll
+D:\OPAM\GameStore\obj\Release\net10.0\refint\GameStore.dll
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.pdb
+D:\OPAM\GameStore\obj\Release\net10.0\GameStore.genruntimeconfig.cache
+D:\OPAM\GameStore\obj\Release\net10.0\ref\GameStore.dll

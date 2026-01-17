@@ -1,5 +1,3 @@
-using System;
-
 namespace GameStore.Models
 {
     /// <summary>
@@ -8,21 +6,23 @@ namespace GameStore.Models
     /// </summary>
     public class User
     {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
-
         /// <summary>
-        /// Ініціалізує нового користувача з обліковими даними.
+        /// Initializes a new instance of the <see cref="User"/> class.
         /// </summary>
         /// <param name="id">Унікальний системний номер.</param>
         /// <param name="email">Логін (електронна пошта) для входу.</param>
-        /// <param name="password">Пароль (у навчальних цілях зберігається як текст).</param>
+        /// <param name="passwordHash">Пароль (у навчальних цілях зберігається як текст).</param>
         public User(int id, string email, string passwordHash)
         {
             Id = id;
             Email = email;
             PasswordHash = passwordHash;
         }
+
+        public int Id { get; set; }
+
+        public string Email { get; set; }
+
+        public string PasswordHash { get; set; }
     }
 }

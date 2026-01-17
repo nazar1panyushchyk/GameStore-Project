@@ -1,21 +1,21 @@
+using System.Collections.Generic;
+
 namespace GameStore.Models
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Клас, що описує замовлення в системі.
     /// </summary>
     public class Order
     {
-        public int Id;
-        public int ClientId;
-        public List<Game> Games;
-        public string GameIds;
-        public double Discount;
-        public double TotalPrice;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Order"/> class.
+        /// </summary>
+        public Order()
+        {
+        }
 
         /// <summary>
-        /// Конструктор для створення об'єкта замовлення при зчитуванні з файлу.
+        /// Initializes a new instance of the <see cref="Order"/> class.
         /// </summary>
         /// <param name="id">ID замовлення.</param>
         /// <param name="clientId">ID клієнта.</param>
@@ -32,8 +32,7 @@ namespace GameStore.Models
         }
 
         /// <summary>
-        /// Конструктор для створення нового замовлення в процесі покупки.
-        /// Ініціалізує список ігор та знижку перед збереженням у базу.
+        /// Initializes a new instance of the <see cref="Order"/> class.
         /// </summary>
         /// <param name="games">Список об'єктів ігор, обраних користувачем.</param>
         /// <param name="discount">Випадкова знижка, згенерована системою.</param>
@@ -43,9 +42,16 @@ namespace GameStore.Models
             Discount = discount;
         }
 
-        /// <summary>
-        /// Порожній конструктор для ініціалізації без параметрів.
-        /// </summary>
-        public Order() { }
+        public int Id { get; set; }
+
+        public int ClientId { get; set; }
+
+        public List<Game> Games { get; set; }
+
+        public string GameIds { get; set; }
+
+        public double Discount { get; set; }
+
+        public double TotalPrice { get; set; }
     }
 }

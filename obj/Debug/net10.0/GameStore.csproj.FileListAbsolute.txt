@@ -13,3 +13,5 @@ D:\OPAM\GameStore\obj\Debug\net10.0\refint\GameStore.dll
 D:\OPAM\GameStore\obj\Debug\net10.0\GameStore.pdb
 D:\OPAM\GameStore\obj\Debug\net10.0\GameStore.genruntimeconfig.cache
 D:\OPAM\GameStore\obj\Debug\net10.0\ref\GameStore.dll
+D:\OPAM\GameStore\bin\Debug\net10.0\GameStore.xml
+D:\OPAM\GameStore\obj\Debug\net10.0\GameStore.xml

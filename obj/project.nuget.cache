@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Uvt3Uj4oECE=",
+  "dgSpecHash": "M7049b3UE+s=",
   "success": true,
   "projectFilePath": "D:\\OPAM\\GameStore\\GameStore.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\chevr\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512"
+  ],
   "logs": []
 }

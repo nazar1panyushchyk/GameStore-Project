@@ -15,7 +15,9 @@ namespace GameStore.Services
             folderPath = folder;
 
             if (!Directory.Exists(folderPath))
+            {
                 Directory.CreateDirectory(folderPath);
+            }
         }
 
         /// <summary>
@@ -30,7 +32,9 @@ namespace GameStore.Services
             int maxId = 0;
 
             if (!File.Exists(path))
+            {
                 return 1;
+            }
 
             using (StreamReader sr = new StreamReader(path))
             {
@@ -39,14 +43,18 @@ namespace GameStore.Services
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (string.IsNullOrWhiteSpace(line))
+                    {
                         continue;
+                    }
 
                     string[] parts = line.Split(',');
                     int id;
                     if (parts.Length > 0 && int.TryParse(parts[0], out id))
                     {
                         if (id > maxId)
+                        {
                             maxId = id;
+                        }
                     }
                 }
             }

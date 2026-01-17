@@ -1,0 +1,444 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GameStore</name>
+    </assembly>
+    <members>
+        <member name="T:GameStore.Models.Client">
+            <summary>
+            Клас, що моделює сутність "Клієнт".
+            Зберігає персональні дані покупця для історії замовлень.
+            </summary>
+        </member>
+        <member name="M:GameStore.Models.Client.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.Models.Client"/> class.
+            </summary>
+            <param name="id">Унікальний ідентифікатор у системі.</param>
+            <param name="name">Повне ім'я або псевдонім клієнта.</param>
+            <param name="email">Електронна пошта для зв'язку.</param>
+        </member>
+        <member name="M:GameStore.Models.Client.IsEmpty">
+            <summary>
+            Перевіряє, чи є об'єкт клієнта коректним (чи заповнене ім'я).
+            Використовується для запобігання створенню пустих записів.
+            </summary>
+            <returns>True, якщо ім'я клієнта відсутнє або порожнє.</returns>
+        </member>
+        <member name="T:GameStore.Models.Game">
+            <summary>
+            Клас, що моделює сутність "Гра" в магазині.
+            </summary>
+        </member>
+        <member name="M:GameStore.Models.Game.#ctor(System.Int32,System.String,System.String,System.Double,System.Decimal)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.Models.Game"/> class.
+            </summary>
+            <param name="id">Унікальний ідентифікатор.</param>
+            <param name="name">Назва гри.</param>
+            <param name="genre">Жанр.</param>
+            <param name="rating">Рейтинг (0-10).</param>
+            <param name="price">Ціна товару.</param>
+        </member>
+        <member name="M:GameStore.Models.Game.IsEmpty">
+            <summary>
+            Перевіряє, чи є об'єкт гри порожнім (некоректним).
+            </summary>
+            <returns>True, якщо назва гри відсутня.</returns>
+        </member>
+        <member name="T:GameStore.Models.Order">
+            <summary>
+            Клас, що описує замовлення в системі.
+            </summary>
+        </member>
+        <member name="M:GameStore.Models.Order.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.Models.Order"/> class.
+            </summary>
+        </member>
+        <member name="M:GameStore.Models.Order.#ctor(System.Int32,System.Int32,System.String,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.Models.Order"/> class.
+            </summary>
+            <param name="id">ID замовлення.</param>
+            <param name="clientId">ID клієнта.</param>
+            <param name="gameIds">Рядок з ID ігор.</param>
+            <param name="discount">Знижка.</param>
+            <param name="totalPrice">Загальна сума.</param>
+        </member>
+        <member name="M:GameStore.Models.Order.#ctor(System.Collections.Generic.List{GameStore.Models.Game},System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.Models.Order"/> class.
+            </summary>
+            <param name="games">Список об'єктів ігор, обраних користувачем.</param>
+            <param name="discount">Випадкова знижка, згенерована системою.</param>
+        </member>
+        <member name="T:GameStore.Models.User">
+            <summary>
+            Клас, що описує обліковий запис користувача (адміністратора) системи.
+            Використовується для автентифікації та надання доступу до функцій магазину.
+            </summary>
+        </member>
+        <member name="M:GameStore.Models.User.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.Models.User"/> class.
+            </summary>
+            <param name="id">Унікальний системний номер.</param>
+            <param name="email">Логін (електронна пошта) для входу.</param>
+            <param name="passwordHash">Пароль (у навчальних цілях зберігається як текст).</param>
+        </member>
+        <member name="M:GameStore.Program.Main">
+            <summary>
+            Головна точка входу в програму.
+            Відповідає за створення необхідних директорій, завантаження даних
+            та запуск циклу авторизації користувача.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.LoadData">
+            <summary>
+            Здійснює завантаження даних про ігри та клієнтів із CSV-файлів у оперативну пам'ять.
+            Використовує методи CsvService для читання файлів.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.SaveData">
+            <summary>
+            Зберігає поточні зміни в списках ігор та клієнтів назад у CSV-файли.
+            Викликається перед завершенням роботи програми.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.GameList">
+            <summary>
+            Відображає меню управління каталогом ігор.
+            Надає доступ до перегляду, додавання, редагування, видалення та пошуку.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ShowGameList">
+            <summary>
+            Виводить на екран повний список ігор у вигляді форматованої таблиці.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ShowGameList(System.Collections.Generic.List{GameStore.Models.Game})">
+            <summary>
+            Виводить на екран повний список ігор у вигляді форматованої таблиці.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ShowGamesTable">
+            <summary>
+            Виводить форматовану таблицю всіх ігор із заголовками.
+            Використовується як допоміжний метод перед операціями редагування або видалення.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.AddGames">
+            <summary>
+            Додає нові ігри до каталогу.
+            Перевіряє ліміт на кількість ігор (максимум 5) та запитує дані у користувача.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.CreateGame(System.Int32)">
+            <summary>
+            Допоміжний метод для створення об'єкта гри на основі введених користувачем даних.
+            Виконує валідацію числових полів (рейтинг, ціна).
+            </summary>
+            <param name="number">Унікальний ідентифікатор нової гри.</param>
+            <returns>Створений об'єкт класу Game.</returns>
+        </member>
+        <member name="M:GameStore.Program.EditGame">
+            <summary>
+            Дозволяє редагувати параметри існуючої гри (назва, жанр, рейтинг, ціна).
+            Змінює лише ті поля, які користувач вирішив оновити.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.DeleteGame">
+            <summary>
+            Видаляє гру з каталогу за її ідентифікатором.
+            Виконує переіндексацію (зсув ID) залишених ігор для збереження порядку.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.SearchGame">
+            <summary>
+            Виконує пошук гри за частковим співпадінням назви.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.SortGames">
+            <summary>
+            Сортує список ігор за ціною.
+            Дозволяє вибрати між вбудованим методом Sort та алгоритмом "бульбашки".
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ClientsMenu">
+            <summary>
+            Відображає меню управління базою клієнтів.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ShowClients">
+            <summary>
+            Виводить список всіх клієнтів у табличному вигляді.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ShowClients(System.Collections.Generic.List{GameStore.Models.Client})">
+            <summary>
+            Виводить переданий список клієнтів у спрощеному вигляді.
+            Використовується для відображення відсортованих списків.
+            </summary>
+            <param name="list">Список клієнтів для відображення.</param>
+        </member>
+        <member name="M:GameStore.Program.ShowClientsList">
+            <summary>
+            Очищає екран та виводить повну таблицю всіх клієнтів із заголовками.
+            Використовується в меню управління клієнтами.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.AddClient">
+            <summary>
+            Додає нового клієнта до системи.
+            Генерує новий ID та зберігає введені ім'я та email.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.EditClient">
+            <summary>
+            Редагує дані обраного клієнта.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.DeleteClient">
+            <summary>
+            Видаляє клієнта з бази та оновлює файл, зберігаючи послідовність ID.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.SortClients">
+            <summary>
+            Сортує клієнтів за іменем в алфавітному порядку.
+            Реалізує вибір алгоритму сортування.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.Orders">
+            <summary>
+            Реалізує процес оформлення замовлення.
+            Дозволяє обирати ігри зі списку, розраховує загальну суму та застосовує випадкову знижку.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.Payments">
+            <summary>
+            Відображає список всіх здійснених платежів з деталізацією сум.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ShowBuyHistory">
+            <summary>
+            Показує детальну історію покупок, включаючи перелік ID товарів та знижки.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.Ratings">
+            <summary>
+            Відображає таблицю з рейтингами ігор.
+            Дозволяє швидко переглянути оцінки товарів у магазині.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.Filters">
+            <summary>
+            Фільтрує список ігор за введеним жанром.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.Statistics">
+            <summary>
+            Обчислює статистичні показники по асортименту ігор.
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.Report">
+            <summary>
+            Формує та виводить на екран загальний звіт про діяльність магазину.
+            Включає статистику цін (мінімальна, максимальна, середня).
+            </summary>
+        </member>
+        <member name="M:GameStore.Program.ReadInt(System.String,System.Int32,System.Int32)">
+            <summary>
+            Безпечно зчитує ціле число з консолі в заданому діапазоні.
+            </summary>
+            <param name="message">Повідомлення для користувача.</param>
+            <param name="min">Мінімальне допустиме значення.</param>
+            <param name="max">Максимальне допустиме значення.</param>
+            <returns>Введене коректне число.</returns>
+        </member>
+        <member name="M:GameStore.Program.ReadString(System.String)">
+            <summary>
+            Зчитує рядкове значення з консолі, попередньо вивівши повідомлення.
+            </summary>
+            <param name="message">Текст запрошення для користувача.</param>
+            <returns>Введений користувачем рядок.</returns>
+        </member>
+        <member name="M:GameStore.Program.PrintGame(GameStore.Models.Game)">
+            <summary>
+            Виводить інформацію про одну гру в рядок з роздільниками.
+            Використовується при пошуку та фільтрації.
+            </summary>
+            <param name="g">Об'єкт гри для виведення.</param>
+        </member>
+        <member name="M:GameStore.Program.PrintClient(GameStore.Models.Client)">
+            <summary>
+            Виводить інформацію про одного клієнта в рядок.
+            </summary>
+            <param name="c">Об'єкт клієнта.</param>
+        </member>
+        <member name="M:GameStore.Program.PrintGameReport(GameStore.Models.Game)">
+            <summary>
+            Виводить форматований рядок таблиці для звіту про гру.
+            Використовується в методі Report для генерації фінальної таблиці.
+            </summary>
+            <param name="g">Об'єкт гри.</param>
+        </member>
+        <member name="M:GameStore.Program.BubbleSortGamesByPrice(System.Collections.Generic.List{GameStore.Models.Game})">
+            <summary>
+            Реалізує алгоритм сортування бульбашкою для списку ігор.
+            Сортує ігри за зростанням ціни.
+            </summary>
+            <param name="list">Вхідний список ігор.</param>
+            <returns>Новий відсортований список ігор.</returns>
+        </member>
+        <member name="M:GameStore.Program.BubbleSortClientsByName(System.Collections.Generic.List{GameStore.Models.Client})">
+            <summary>
+            Реалізує алгоритм сортування бульбашкою для списку клієнтів.
+            Сортує клієнтів за іменем в алфавітному порядку.
+            </summary>
+            <param name="list">Вхідний список клієнтів.</param>
+            <returns>Новий відсортований список клієнтів.</returns>
+        </member>
+        <member name="M:GameStore.Program.LoginUser(System.Int32)">
+            <summary>
+            Здійснює процедуру входу користувача в систему.
+            Перевіряє відповідність введеного email та пароля збереженим даним.
+            </summary>
+            <param name="attempts">Кількість доступних спроб для введення пароля.</param>
+            <returns>True, якщо вхід успішний; інакше False.</returns>
+        </member>
+        <member name="M:GameStore.Program.RegisterUser(System.Int32)">
+            <summary>
+            Реєструє нового користувача в системі.
+            Перевіряє унікальність email та співпадіння паролів при введенні.
+            </summary>
+            <param name="attempts">Кількість спроб для підтвердження пароля.</param>
+            <returns>Результат автоматичного входу після успішної реєстрації.</returns>
+        </member>
+        <member name="T:GameStore.CsvService">
+            <summary>
+            Сервіс для роботи з CSV-файлами.
+            Забезпечує читання та запис даних про ігри, клієнтів, користувачів та замовлення.
+            </summary>
+        </member>
+        <member name="M:GameStore.CsvService.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GameStore.CsvService"/> class.
+            </summary>
+            <param name="folderPath">Шлях до папки з файлами даних.</param>
+        </member>
+        <member name="M:GameStore.CsvService.AddGame(GameStore.Models.Game)">
+            <summary>
+            Додає новий запис про гру в кінець файлу games.csv.
+            Якщо файл не існує, створює його та додає заголовок.
+            </summary>
+            <param name="g">Об'єкт гри, який необхідно зберегти.</param>
+        </member>
+        <member name="M:GameStore.CsvService.GetAllGames">
+            <summary>
+            Зчитує повний список ігор з файлу games.csv.
+            Виконує парсинг текстових рядків у об'єкти класу Game.
+            </summary>
+            <returns>Список об'єктів Game або порожній список, якщо файл відсутній.</returns>
+        </member>
+        <member name="M:GameStore.CsvService.UpdateGame(GameStore.Models.Game)">
+            <summary>
+            Оновлює інформацію про існуючого клієнта у файлі clients.csv.
+            </summary>
+            <param name="g">Об'єкт гри з оновленими даними.</param>
+        </member>
+        <member name="M:GameStore.CsvService.DeleteGame(System.Int32)">
+            <summary>
+            Видаляє гру з файлу games.csv за її ідентифікатором.
+            Зчитує всі ігри, видаляє потрібну та повністю перезаписує файл.
+            </summary>
+            <param name="id">Ідентифікатор гри для видалення.</param>
+        </member>
+        <member name="M:GameStore.CsvService.AddClient(GameStore.Models.Client)">
+            <summary>
+            Додає нового клієнта до файлу clients.csv.
+            Створює файл із заголовками, якщо він ще не існує.
+            </summary>
+            <param name="c">Об'єкт клієнта, який потрібно зберегти.</param>
+        </member>
+        <member name="M:GameStore.CsvService.GetAllClients">
+            <summary>
+            /// Зчитує всіх клієнтів з файлу clients.csv.
+            </summary>
+            <returns>Список клієнтів.</returns>
+        </member>
+        <member name="M:GameStore.CsvService.UpdateClient(GameStore.Models.Client)">
+            <summary>
+            Оновлює дані клієнта у файлі.
+            </summary>
+            <param name="c">Клієнт для оновлення.</param>
+        </member>
+        <member name="M:GameStore.CsvService.DeleteClient(System.Int32)">
+            <summary>
+            Видаляє клієнта з файлу clients.csv за його ідентифікатором.
+            Після видалення перезаписує файл для збереження актуального стану.
+            </summary>
+            <param name="id">Ідентифікатор клієнта для видалення.</param>
+        </member>
+        <member name="M:GameStore.CsvService.AddOrder(GameStore.Models.Order)">
+            <summary>
+            Зберігає інформацію про нове замовлення у файл orders.csv.
+            </summary>
+            <param name="order">Об'єкт замовлення для запису.</param>
+        </member>
+        <member name="M:GameStore.CsvService.GetAllOrders">
+            <summary>
+            Зчитує історію замовлень з файлу orders.csv.
+            </summary>
+            <returns>Список замовлень.</returns>
+        </member>
+        <member name="M:GameStore.CsvService.SaveAllOrders(System.Collections.Generic.List{GameStore.Models.Order})">
+            <summary>
+            Зберігає повний список замовлень у файл, перезаписуючи його.
+            </summary>
+            <param name="orders">Список замовлень для збереження.</param>
+        </member>
+        <member name="M:GameStore.CsvService.GetAllUsers">
+            <summary>
+            Зчитує список усіх зареєстрованих користувачів (адміністраторів) з файлу users.csv.
+            Виконує перевірку на коректність даних у рядках файлу.
+            </summary>
+            <returns>Список об'єктів User.</returns>
+        </member>
+        <member name="M:GameStore.CsvService.AddUser(GameStore.Models.User)">
+            <summary>
+            Реєструє нового користувача в системі, додаючи запис у файл users.csv.
+            </summary>
+            <param name="u">Об'єкт користувача з логіном та паролем.</param>
+        </member>
+        <member name="M:GameStore.CsvService.UserExists(System.String)">
+            <summary>
+            Перевіряє, чи існує користувач із вказаною електронною поштою.
+            Використовується при реєстрації для уникнення дублікатів.
+            </summary>
+            <param name="email">Email для перевірки.</param>
+            <returns>True, якщо користувач вже існує, інакше False.</returns>
+        </member>
+        <member name="M:GameStore.CsvService.GetUserByEmail(System.String)">
+            <summary>
+            Знаходить користувача (адміністратора) за email для авторизації.
+            </summary>
+            <param name="email">Email користувача.</param>
+            <returns>Об'єкт користувача або null.</returns>
+        </member>
+        <member name="T:GameStore.Services.IdGenerator">
+            <summary>
+            Допоміжний клас для генерації унікальних ідентифікаторів.
+            </summary>
+        </member>
+        <member name="M:GameStore.Services.IdGenerator.GetNextId(System.String)">
+            <summary>
+            Визначає наступний доступний ID для запису у вказаному файлі.
+            Аналізує існуючі ID та повертає значення на 1 більше від максимального.
+            </summary>
+            <param name="fileName">Назва файлу (наприклад, "games.csv").</param>
+            <returns>Унікальний цілочисельний ідентифікатор.</returns>
+        </member>
+    </members>
+</doc>

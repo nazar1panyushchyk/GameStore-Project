@@ -1,46 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using GameStore.Models;
 
 namespace GameStore
 {
-    class Program
+    internal class Program
     {
-        static CsvService csvService = new CsvService("CSV");
+        private static readonly string BaseDir = Directory.GetCurrentDirectory();
 
-        static readonly string BaseDir = Directory.GetCurrentDirectory();
-
-        static readonly string CsvFolder =
+        private static readonly string CsvFolder =
             Path.Combine(BaseDir, "CSV");
 
-        static readonly string GamesFile =
+        private static readonly string GamesFile =
             Path.Combine(CsvFolder, "games.csv");
 
-        static readonly string ClientsFile =
+        private static readonly string ClientsFile =
             Path.Combine(CsvFolder, "clients.csv");
 
-        static readonly string OrdersFile =
+        private static readonly string OrdersFile =
             Path.Combine(CsvFolder, "orders.csv");
 
-        static readonly string UsersFile =
+        private static readonly string UsersFile =
             Path.Combine(CsvFolder, "users.csv");
 
-        private static List<Game> Games = new List<Game>();
-        private static List<Client> Clients = new List<Client>();
-        private static List<Order> BuyHistoryMenu = new List<Order>();
+        private static CsvService csvService = new CsvService("CSV");
 
-
-
-        // private static int nextClientId = 1;
+        private static List<Game> games = new List<Game>();
+        private static List<Client> clients = new List<Client>();
+        private static List<Order> buyHistoryMenu = new List<Order>();
 
         /// <summary>
         /// Головна точка входу в програму.
         /// Відповідає за створення необхідних директорій, завантаження даних
         /// та запуск циклу авторизації користувача.
         /// </summary>
-        static void Main()
+        private static void Main()
         {
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.InputEncoding = Encoding.UTF8;
 
             Directory.CreateDirectory(CsvFolder);
 
@@ -106,15 +105,33 @@ namespace GameStore
 
                 switch (menuChoice)
                 {
-                    case 1: GameList(); break;
-                    case 2: ClientsMenu(); break;
-                    case 3: Orders(); break;
-                    case 4: Payments(); break;
-                    case 5: Ratings(); break;
-                    case 6: Filters(); break;
-                    case 7: ShowBuyHistory(); break;
-                    case 8: Statistics(); break;
-                    case 9: Report(); break;
+                    case 1:
+                        GameList();
+                        break;
+                    case 2:
+                        ClientsMenu();
+                        break;
+                    case 3:
+                        Orders();
+                        break;
+                    case 4:
+                        Payments();
+                        break;
+                    case 5:
+                        Ratings();
+                        break;
+                    case 6:
+                        Filters();
+                        break;
+                    case 7:
+                        ShowBuyHistory();
+                        break;
+                    case 8:
+                        Statistics();
+                        break;
+                    case 9:
+                        Report();
+                        break;
                     case 0:
                         SaveData();
                         Console.WriteLine("Вихід з магазину...");
@@ -131,30 +148,35 @@ namespace GameStore
         /// Здійснює завантаження даних про ігри та клієнтів із CSV-файлів у оперативну пам'ять.
         /// Використовує методи CsvService для читання файлів.
         /// </summary>
-        static void LoadData()
+        private static void LoadData()
         {
-            Games = csvService.GetAllGames();
-            Clients = csvService.GetAllClients();
-            BuyHistoryMenu = csvService.GetAllOrders();
+            games = csvService.GetAllGames();
+            clients = csvService.GetAllClients();
+            buyHistoryMenu = csvService.GetAllOrders();
         }
 
         /// <summary>
         /// Зберігає поточні зміни в списках ігор та клієнтів назад у CSV-файли.
         /// Викликається перед завершенням роботи програми.
         /// </summary>
-        static void SaveData()
+        private static void SaveData()
         {
-            foreach (var g in Games)
+            foreach (var g in games)
+            {
                 csvService.UpdateGame(g);
-            foreach (var c in Clients)
+            }
+
+            foreach (var c in clients)
+            {
                 csvService.UpdateClient(c);
+            }
         }
 
         /// <summary>
         /// Відображає меню управління каталогом ігор.
         /// Надає доступ до перегляду, додавання, редагування, видалення та пошуку.
         /// </summary>
-        static void GameList()
+        private static void GameList()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -204,10 +226,10 @@ namespace GameStore
         /// <summary>
         /// Виводить на екран повний список ігор у вигляді форматованої таблиці.
         /// </summary>
-        static void ShowGameList()
+        private static void ShowGameList()
         {
             Console.Clear();
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор наразі не додано!");
@@ -221,10 +243,17 @@ namespace GameStore
             Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7} {4,-8}", "ID", "Назва", "Жанр", "Рейтинг", "Ціна");
             Console.WriteLine(new string('-', 65));
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
-                Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7:F1} {4,-8:F2}", g.Id, g.Name, g.Genre, g.Rating, g.Price);
+                Console.WriteLine(
+                    "{0,-5} {1,-25} {2,-15} {3,-7:F1} {4,-8:F2}",
+                    g.Id,
+                    g.Name,
+                    g.Genre,
+                    g.Rating,
+                    g.Price);
             }
+
             Console.ResetColor();
 
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутися...");
@@ -234,7 +263,7 @@ namespace GameStore
         /// <summary>
         /// Виводить на екран повний список ігор у вигляді форматованої таблиці.
         /// </summary>
-        static void ShowGameList(List<Game> list)
+        private static void ShowGameList(List<Game> list)
         {
             foreach (var game in list)
             {
@@ -246,11 +275,11 @@ namespace GameStore
         /// Виводить форматовану таблицю всіх ігор із заголовками.
         /// Використовується як допоміжний метод перед операціями редагування або видалення.
         /// </summary>
-        static void ShowGamesTable()
+        private static void ShowGamesTable()
         {
             Console.Clear();
 
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор наразі немає!");
@@ -263,25 +292,29 @@ namespace GameStore
             Console.WriteLine(new string('-', 70));
             Console.ResetColor();
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
-                Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7:F1} {4,-8:F2}",
-                    g.Id, g.Name, g.Genre, g.Rating, g.Price);
+                Console.WriteLine(
+                    "{0,-5} {1,-25} {2,-15} {3,-7:F1} {4,-8:F2}",
+                    g.Id,
+                    g.Name,
+                    g.Genre,
+                    g.Rating,
+                    g.Price);
             }
         }
-
 
         /// <summary>
         /// Додає нові ігри до каталогу.
         /// Перевіряє ліміт на кількість ігор (максимум 5) та запитує дані у користувача.
         /// </summary>
-        static void AddGames()
+        private static void AddGames()
         {
             Console.Clear();
 
-            var games = csvService.GetAllGames();
+            var gamesList = csvService.GetAllGames();
 
-            if (games.Count >= 5)
+            if (gamesList.Count >= 5)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Каталог вже містить 5 ігор. Додати нову поки не можна.");
@@ -291,7 +324,7 @@ namespace GameStore
                 return;
             }
 
-            int gamesToAdd = 5 - games.Count;
+            int gamesToAdd = 5 - gamesList.Count;
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"Ви можете додати ще стільки ігор: {gamesToAdd}");
@@ -299,11 +332,11 @@ namespace GameStore
 
             for (int i = 0; i < gamesToAdd; i++)
             {
-                int newId = games.Count > 0 ? games.Max(g => g.Id) + 1 : 1;
+                int newId = gamesList.Count > 0 ? gamesList.Max(g => g.Id) + 1 : 1;
 
                 Game game = CreateGame(newId);
 
-                games.Add(game);
+                gamesList.Add(game);
                 csvService.AddGame(game);
 
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -311,7 +344,7 @@ namespace GameStore
                 Console.ResetColor();
             }
 
-            Games = csvService.GetAllGames();
+            games = csvService.GetAllGames();
 
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутися...");
             Console.ReadKey(true);
@@ -323,7 +356,7 @@ namespace GameStore
         /// </summary>
         /// <param name="number">Унікальний ідентифікатор нової гри.</param>
         /// <returns>Створений об'єкт класу Game.</returns>
-        static Game CreateGame(int number)
+        private static Game CreateGame(int number)
         {
             Console.Clear();
             Console.WriteLine($"\n=== Гра {number} ===");
@@ -341,6 +374,7 @@ namespace GameStore
                     Console.ResetColor();
                     continue;
                 }
+
                 break;
             }
 
@@ -355,6 +389,7 @@ namespace GameStore
                     Console.ResetColor();
                     continue;
                 }
+
                 break;
             }
 
@@ -365,13 +400,13 @@ namespace GameStore
         /// Дозволяє редагувати параметри існуючої гри (назва, жанр, рейтинг, ціна).
         /// Змінює лише ті поля, які користувач вирішив оновити.
         /// </summary>
-        static void EditGame()
+        private static void EditGame()
         {
             Console.Clear();
             var csvService = new CsvService("CSV");
-            var games = csvService.GetAllGames();
+            var gamesList = csvService.GetAllGames();
 
-            if (games.Count == 0)
+            if (gamesList.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор немає для редагування.");
@@ -382,19 +417,29 @@ namespace GameStore
 
             ShowGamesTable();
 
-            int id = ReadInt("Введіть Id гри для редагування: ", 1, games.Count);
-            Game g = games[id - 1];
+            int id = ReadInt("Введіть Id гри для редагування: ", 1, gamesList.Count);
+            Game g = gamesList[id - 1];
 
             string newName = ReadString($"Нова назва ({g.Name}, якщо пусто — без змін): ");
-            if (!string.IsNullOrWhiteSpace(newName)) g.Name = newName;
+            if (!string.IsNullOrWhiteSpace(newName))
+            {
+                g.Name = newName;
+            }
 
             string newGenre = ReadString($"Новий жанр ({g.Genre}, якщо пусто — без змін): ");
-            if (!string.IsNullOrWhiteSpace(newGenre)) g.Genre = newGenre;
+            if (!string.IsNullOrWhiteSpace(newGenre))
+            {
+                g.Genre = newGenre;
+            }
 
             while (true)
             {
                 string ratingStr = ReadString($"Новий рейтинг ({g.Rating}, 0–5, якщо пусто — без змін): ");
-                if (string.IsNullOrWhiteSpace(ratingStr)) break;
+                if (string.IsNullOrWhiteSpace(ratingStr))
+                {
+                    break;
+                }
+
                 ratingStr = ratingStr.Replace(",", ".");
                 if (!double.TryParse(ratingStr, out double newRating) || newRating < 0 || newRating > 5)
                 {
@@ -403,6 +448,7 @@ namespace GameStore
                     Console.ResetColor();
                     continue;
                 }
+
                 g.Rating = newRating;
                 break;
             }
@@ -410,23 +456,38 @@ namespace GameStore
             while (true)
             {
                 string priceStr = ReadString($"Нова ціна ({g.Price}, якщо пусто — без змін): ");
-                if (string.IsNullOrWhiteSpace(priceStr)) break;
+
+                if (string.IsNullOrWhiteSpace(priceStr))
+                {
+                    break;
+                }
+
                 priceStr = priceStr.Replace(",", ".");
-                if (!double.TryParse(priceStr, out double newPrice) || newPrice < 0)
+
+                if (!double.TryParse(priceStr, out double newPrice))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Помилка! Ціна має бути додатнім числом.");
+                    Console.WriteLine("Помилка! Ви ввели текст або некоректний формат. Введіть число.");
                     Console.ResetColor();
                     continue;
                 }
+
+                if (newPrice < 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Помилка! Ціна не може бути меншою за нуль.");
+                    Console.ResetColor();
+                    continue;
+                }
+
                 g.Price = (decimal)newPrice;
                 break;
             }
 
-            games[id - 1] = g;
+            gamesList[id - 1] = g;
             csvService.UpdateGame(g);
 
-            Games = csvService.GetAllGames();
+            games = csvService.GetAllGames();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Гру успішно змінено!");
@@ -438,13 +499,13 @@ namespace GameStore
         /// Видаляє гру з каталогу за її ідентифікатором.
         /// Виконує переіндексацію (зсув ID) залишених ігор для збереження порядку.
         /// </summary>
-        static void DeleteGame()
+        private static void DeleteGame()
         {
             Console.Clear();
             var csvService = new CsvService("CSV");
-            var games = csvService.GetAllGames();
+            var gamesList = csvService.GetAllGames();
 
-            if (games.Count == 0)
+            if (gamesList.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор немає, видаляти нічого!");
@@ -455,20 +516,20 @@ namespace GameStore
 
             ShowGamesTable();
 
-            int idToDelete = ReadInt("Введіть ID гри для видалення: ", 1, games.Count);
-            games.RemoveAt(idToDelete - 1);
+            int idToDelete = ReadInt("Введіть ID гри для видалення: ", 1, gamesList.Count);
+            gamesList.RemoveAt(idToDelete - 1);
 
-            for (int i = 0; i < games.Count; i++)
+            for (int i = 0; i < gamesList.Count; i++)
             {
-                Game g = games[i];
-                games[i] = new Game(i + 1, g.Name, g.Genre, g.Rating, g.Price);
+                Game g = gamesList[i];
+                gamesList[i] = new Game(i + 1, g.Name, g.Genre, g.Rating, g.Price);
             }
 
             string path = Path.Combine(CsvFolder, "games.csv");
             using (StreamWriter sw = new StreamWriter(path))
             {
                 sw.WriteLine("Id,Name,Genre,Rating,Price");
-                foreach (var g in games)
+                foreach (var g in gamesList)
                 {
                     string ratingStr = Math.Round(g.Rating, 2).ToString().Replace(",", ".");
                     string priceStr = Math.Round(g.Price, 2).ToString().Replace(",", ".");
@@ -476,8 +537,7 @@ namespace GameStore
                 }
             }
 
-            Games = csvService.GetAllGames();
-
+            games = csvService.GetAllGames();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Гру успішно видалено!");
@@ -488,13 +548,13 @@ namespace GameStore
         /// <summary>
         /// Виконує пошук гри за частковим співпадінням назви.
         /// </summary>
-        static void SearchGame()
+        private static void SearchGame()
         {
             Console.Clear();
             string search = ReadString("Введіть назву гри для пошуку: ").ToLower();
             bool found = false;
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
                 if (g.Name.ToLower().Contains(search))
                 {
@@ -504,7 +564,9 @@ namespace GameStore
             }
 
             if (!found)
+            {
                 Console.WriteLine("Гру не знайдено.");
+            }
 
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутися...");
             Console.ReadKey(true);
@@ -514,10 +576,10 @@ namespace GameStore
         /// Сортує список ігор за ціною.
         /// Дозволяє вибрати між вбудованим методом Sort та алгоритмом "бульбашки".
         /// </summary>
-        static void SortGames()
+        private static void SortGames()
         {
             Console.Clear();
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор немає, сортувати нічого!");
@@ -535,7 +597,7 @@ namespace GameStore
 
             int choice = ReadInt("Введіть номер: ", 1, 2);
 
-            List<Game> sortedGames = new List<Game>(Games);
+            List<Game> sortedGames = new List<Game>(games);
 
             if (choice == 1)
             {
@@ -543,7 +605,6 @@ namespace GameStore
             }
             else
             {
-
                 for (int i = 0; i < sortedGames.Count - 1; i++)
                 {
                     for (int j = 0; j < sortedGames.Count - i - 1; j++)
@@ -571,7 +632,7 @@ namespace GameStore
         /// <summary>
         /// Відображає меню управління базою клієнтів.
         /// </summary>
-        static void ClientsMenu()
+        private static void ClientsMenu()
         {
             bool back = false;
 
@@ -617,36 +678,10 @@ namespace GameStore
             }
         }
 
-
-        /// <summary>
-        /// Додає нового клієнта до системи.
-        /// Генерує новий ID та зберігає введені ім'я та email.
-        /// </summary>
-        static void AddClient()
-        {
-            Console.Clear();
-            var clients = csvService.GetAllClients();
-
-            string name = ReadString("Введіть ім'я клієнта: ");
-            string email = ReadString("Введіть email клієнта: ");
-
-            int newId = clients.Count > 0 ? clients.Max(c => c.Id) + 1 : 1;
-
-            Client client = new Client(newId, name, email);
-            csvService.AddClient(client);
-
-            Clients = csvService.GetAllClients();
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nКлієнта додано успішно!");
-            Console.ResetColor();
-            Console.ReadKey(true);
-        }
-
         /// <summary>
         /// Виводить список всіх клієнтів у табличному вигляді.
         /// </summary>
-        static void ShowClients()
+        private static void ShowClients()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -654,7 +689,7 @@ namespace GameStore
             Console.ResetColor();
 
             Console.Clear();
-            if (Clients.Count == 0)
+            if (clients.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Клієнтів ще немає.");
@@ -668,10 +703,11 @@ namespace GameStore
             Console.WriteLine("{0,-5} {1,-20} {2,-30}", "ID", "Ім'я", "Email");
             Console.WriteLine(new string('-', 60));
 
-            foreach (var c in Clients)
+            foreach (var c in clients)
             {
                 Console.WriteLine("{0,-5} {1,-20} {2,-30}", c.Id, c.Name, c.Email);
             }
+
             Console.ResetColor();
 
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутися...");
@@ -683,7 +719,7 @@ namespace GameStore
         /// Використовується для відображення відсортованих списків.
         /// </summary>
         /// <param name="list">Список клієнтів для відображення.</param>
-        static void ShowClients(List<Client> list)
+        private static void ShowClients(List<Client> list)
         {
             foreach (var client in list)
             {
@@ -695,14 +731,14 @@ namespace GameStore
         /// Очищає екран та виводить повну таблицю всіх клієнтів із заголовками.
         /// Використовується в меню управління клієнтами.
         /// </summary>
-        static void ShowClientsList()
+        private static void ShowClientsList()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("=== Всі клієнти ===\n");
             Console.ResetColor();
             Console.Clear();
-            if (Clients.Count == 0)
+            if (clients.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Клієнтів ще немає.");
@@ -714,23 +750,49 @@ namespace GameStore
             Console.WriteLine("{0,-5} {1,-20} {2,-30}", "ID", "Ім'я", "Email");
             Console.WriteLine(new string('-', 60));
 
-            foreach (var c in Clients)
+            foreach (var c in clients)
             {
                 Console.WriteLine("{0,-5} {1,-20} {2,-30}", c.Id, c.Name, c.Email);
             }
+
             Console.ResetColor();
+        }
+
+        /// <summary>
+        /// Додає нового клієнта до системи.
+        /// Генерує новий ID та зберігає введені ім'я та email.
+        /// </summary>
+        private static void AddClient()
+        {
+            Console.Clear();
+            var clientsList = csvService.GetAllClients();
+
+            string name = ReadString("Введіть ім'я клієнта: ");
+            string email = ReadString("Введіть email клієнта: ");
+
+            int newId = clientsList.Count > 0 ? clientsList.Max(c => c.Id) + 1 : 1;
+
+            Client client = new Client(newId, name, email);
+            csvService.AddClient(client);
+
+            clients = csvService.GetAllClients();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nКлієнта додано успішно!");
+            Console.ResetColor();
+            Console.ReadKey(true);
         }
 
         /// <summary>
         /// Редагує дані обраного клієнта.
         /// </summary>
-        static void EditClient()
+        private static void EditClient()
         {
             Console.Clear();
             var csvService = new CsvService("CSV");
-            var clients = csvService.GetAllClients();
+            var clientsList = csvService.GetAllClients();
 
-            if (clients.Count == 0)
+            if (clientsList.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Клієнтів немає для редагування.");
@@ -741,22 +803,28 @@ namespace GameStore
 
             ShowClientsList();
 
-            int id = ReadInt("Введіть Id клієнта для редагування: ", 1, clients.Count);
-            GameStore.Models.Client c = clients[id - 1];
-
+            int id = ReadInt("Введіть Id клієнта для редагування: ", 1, clientsList.Count);
+            GameStore.Models.Client c = clientsList[id - 1];
 
             string name = ReadString($"Нове ім'я ({c.Name}, якщо пусто — без змін): ");
             string email = ReadString($"Новий email ({c.Email}, якщо пусто — без змін): ");
 
-            if (!string.IsNullOrWhiteSpace(name)) c.Name = name;
-            if (!string.IsNullOrWhiteSpace(email)) c.Email = email;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                c.Name = name;
+            }
 
-            clients[id - 1] = c;
-            clients = csvService.GetAllClients();
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                c.Email = email;
+            }
+
+            clientsList[id - 1] = c;
+            clientsList = csvService.GetAllClients();
 
             csvService.UpdateClient(c);
 
-            Clients = csvService.GetAllClients();
+            clients = csvService.GetAllClients();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Клієнта успішно змінено!");
@@ -767,13 +835,13 @@ namespace GameStore
         /// <summary>
         /// Видаляє клієнта з бази та оновлює файл, зберігаючи послідовність ID.
         /// </summary>
-        static void DeleteClient()
+        private static void DeleteClient()
         {
             Console.Clear();
             var csvService = new CsvService("CSV");
-            var clients = csvService.GetAllClients();
+            var clientsList = csvService.GetAllClients();
 
-            if (clients.Count == 0)
+            if (clientsList.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Клієнтів немає, видаляти нічого!");
@@ -784,24 +852,26 @@ namespace GameStore
 
             ShowClientsList();
 
-            int idToDelete = ReadInt("Введіть ID клієнта для видалення: ", 1, clients.Count);
-            clients.RemoveAt(idToDelete - 1);
+            int idToDelete = ReadInt("Введіть ID клієнта для видалення: ", 1, clientsList.Count);
+            clientsList.RemoveAt(idToDelete - 1);
 
-            for (int i = 0; i < clients.Count; i++)
+            for (int i = 0; i < clientsList.Count; i++)
             {
-                GameStore.Models.Client c = clients[i];
-                clients[i] = new Client(i + 1, c.Name, c.Email);
+                GameStore.Models.Client c = clientsList[i];
+                clientsList[i] = new Client(i + 1, c.Name, c.Email);
             }
 
             string path = Path.Combine(CsvFolder, "clients.csv");
             using (StreamWriter sw = new StreamWriter(path))
             {
                 sw.WriteLine("Id,Name,Email");
-                foreach (var c in clients)
+                foreach (var c in clientsList)
+                {
                     sw.WriteLine($"{c.Id},{c.Name},{c.Email}");
+                }
             }
 
-            Clients = csvService.GetAllClients();
+            clients = csvService.GetAllClients();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Клієнта успішно видалено!");
@@ -813,11 +883,11 @@ namespace GameStore
         /// Сортує клієнтів за іменем в алфавітному порядку.
         /// Реалізує вибір алгоритму сортування.
         /// </summary>
-        static void SortClients()
+        private static void SortClients()
         {
             Console.Clear();
 
-            if (Clients.Count == 0)
+            if (clients.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Клієнтів ще немає, сортування неможливе.");
@@ -840,12 +910,12 @@ namespace GameStore
             switch (choice)
             {
                 case "1":
-                    sortedClients = new List<Client>(Clients);
+                    sortedClients = new List<Client>(clients);
                     sortedClients.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
                     Console.WriteLine("\nКлієнти відсортовані за ім’ям (вбудоване сортування):");
                     break;
                 case "2":
-                    sortedClients = BubbleSortClientsByName(Clients);
+                    sortedClients = BubbleSortClientsByName(clients);
                     Console.WriteLine("\nКлієнти відсортовані за ім’ям (бульбашка):");
                     break;
                 default:
@@ -853,7 +923,6 @@ namespace GameStore
                     Console.ReadKey(true);
                     return;
             }
-
 
             ShowClients(sortedClients);
             Console.WriteLine("\nНатисніть будь-яку клавішу для повернення...");
@@ -864,7 +933,7 @@ namespace GameStore
         /// Реалізує процес оформлення замовлення.
         /// Дозволяє обирати ігри зі списку, розраховує загальну суму та застосовує випадкову знижку.
         /// </summary>
-        static void Orders()
+        private static void Orders()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -904,11 +973,30 @@ namespace GameStore
                 Console.WriteLine($"Додано → {selected.Name} ({selected.Price:F2} грн)");
                 Console.ResetColor();
 
-                Console.Write("Бажаєте додати ще щось? (так/ні): ");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                answer = Console.ReadLine();
-                if (answer == null) answer = "ні";
-                Console.ResetColor();
+                while (true)
+                {
+                    Console.Write("Бажаєте додати ще щось? (так/ні): ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    string input = Console.ReadLine();
+                    Console.ResetColor();
+
+                    if (input != null)
+                    {
+                        input = input.Trim().ToLower();
+                    }
+
+                    if (input == "так" || input == "ні")
+                    {
+                        answer = input;
+                        break;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Помилка! Введіть \"так\" або \"ні\".");
+                        Console.ResetColor();
+                    }
+                }
             }
 
             if (currentOrder.Count > 0)
@@ -916,10 +1004,14 @@ namespace GameStore
                 Random randomDiscount = new Random();
                 double discount = randomDiscount.Next(5, 16);
 
-                string gameIds = "";
+                string gameIds = string.Empty;
                 for (int i = 0; i < currentOrder.Count; i++)
                 {
-                    if (i > 0) gameIds += "|";
+                    if (i > 0)
+                    {
+                        gameIds += "|";
+                    }
+
                     gameIds += currentOrder[i].Id.ToString();
                 }
 
@@ -928,20 +1020,25 @@ namespace GameStore
                 newOrder.TotalPrice = total;
                 newOrder.ClientId = 0;
 
-
                 int maxId = 0;
-                foreach (var o in BuyHistoryMenu)
-                    if (o.Id > maxId) maxId = o.Id;
+                foreach (var o in buyHistoryMenu)
+                {
+                    if (o.Id > maxId)
+                    {
+                        maxId = o.Id;
+                    }
+                }
+
                 newOrder.Id = maxId + 1;
 
-                BuyHistoryMenu.Add(newOrder);
+                buyHistoryMenu.Add(newOrder);
 
-                csvService.SaveAllOrders(BuyHistoryMenu);
+                csvService.SaveAllOrders(buyHistoryMenu);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\nЗагальна сума замовлення: {total:F2} грн");
                 Console.WriteLine($"Знижка для вас: {discount}%");
-                double finalPrice = total * (1 - discount / 100.0);
+                double finalPrice = total * (1 - (discount / 100.0));
                 finalPrice = Math.Round(finalPrice, 2);
                 Console.WriteLine($"Загальна сума зі знижкою: {finalPrice:F2} грн");
                 Console.ResetColor();
@@ -954,7 +1051,7 @@ namespace GameStore
         /// <summary>
         /// Відображає список всіх здійснених платежів з деталізацією сум.
         /// </summary>
-        static void Payments()
+        private static void Payments()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -981,7 +1078,7 @@ namespace GameStore
             {
                 double orderSum = order.TotalPrice;
 
-                double finalPrice = orderSum * (1 - order.Discount / 100.0);
+                double finalPrice = orderSum * (1 - (order.Discount / 100.0));
                 finalPrice = Math.Round(finalPrice, 2);
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -1006,7 +1103,7 @@ namespace GameStore
         /// <summary>
         /// Показує детальну історію покупок, включаючи перелік ID товарів та знижки.
         /// </summary>
-        static void ShowBuyHistory()
+        private static void ShowBuyHistory()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -1037,7 +1134,7 @@ namespace GameStore
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"  Знижка: {order.Discount}%");
-                    double finalPrice = orderSum * (1 - order.Discount / 100.0);
+                    double finalPrice = orderSum * (1 - (order.Discount / 100.0));
                     finalPrice = Math.Round(finalPrice, 2);
                     Console.WriteLine($"  Загальна сума зі знижкою: {finalPrice:F2} грн\n");
                     Console.ResetColor();
@@ -1052,10 +1149,10 @@ namespace GameStore
         /// Відображає таблицю з рейтингами ігор.
         /// Дозволяє швидко переглянути оцінки товарів у магазині.
         /// </summary>
-        static void Ratings()
+        private static void Ratings()
         {
             Console.Clear();
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор ще немає, рейтинги відображати неможливо!\n");
@@ -1069,10 +1166,11 @@ namespace GameStore
             Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7}", "ID", "Назва", "Жанр", "Рейтинг");
             Console.WriteLine(new string('-', 60));
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
                 Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7:F1}", g.Id, g.Name, g.Genre, g.Rating);
             }
+
             Console.ResetColor();
 
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутися...");
@@ -1082,14 +1180,14 @@ namespace GameStore
         /// <summary>
         /// Фільтрує список ігор за введеним жанром.
         /// </summary>
-        static void Filters()
+        private static void Filters()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("=== Фільтр ігор за жанром ===\n");
             Console.ResetColor();
 
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор ще немає, фільтрувати нічого!\n");
@@ -1105,7 +1203,7 @@ namespace GameStore
             Console.WriteLine("\nРезультати пошуку:\n");
             Console.ResetColor();
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
                 if (g.Genre.ToLower() == genre)
                 {
@@ -1128,14 +1226,14 @@ namespace GameStore
         /// <summary>
         /// Обчислює статистичні показники по асортименту ігор.
         /// </summary>
-        static void Statistics()
+        private static void Statistics()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("=== Статистика ігор ===\n");
             Console.ResetColor();
 
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор наразі немає, статистику обчислити неможливо.");
@@ -1151,18 +1249,29 @@ namespace GameStore
             int countExpensive = 0;
             decimal threshold = 500;
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
                 totalPrice += (double)g.Price;
-                if (g.Price < minPrice) minPrice = g.Price;
-                if (g.Price > maxPrice) maxPrice = g.Price;
-                if (g.Price > threshold) countExpensive++;
+                if (g.Price < minPrice)
+                {
+                    minPrice = g.Price;
+                }
+
+                if (g.Price > maxPrice)
+                {
+                    maxPrice = g.Price;
+                }
+
+                if (g.Price > threshold)
+                {
+                    countExpensive++;
+                }
             }
 
-            double averagePrice = totalPrice / Games.Count;
+            double averagePrice = totalPrice / games.Count;
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Кількість ігор: {Games.Count}");
+            Console.WriteLine($"Кількість ігор: {games.Count}");
             Console.WriteLine($"Загальна сума всіх ігор: {totalPrice:F2} грн");
             Console.WriteLine($"Середня ціна гри: {averagePrice:F2} грн");
             Console.WriteLine($"Кількість ігор з ціною > {threshold:F2} грн: {countExpensive}");
@@ -1178,14 +1287,14 @@ namespace GameStore
         /// Формує та виводить на екран загальний звіт про діяльність магазину.
         /// Включає статистику цін (мінімальна, максимальна, середня).
         /// </summary>
-        static void Report()
+        private static void Report()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("=== Звіт по іграх ===\n");
             Console.ResetColor();
 
-            if (Games.Count == 0)
+            if (games.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ігор немає, звіт сформувати неможливо.");
@@ -1203,20 +1312,27 @@ namespace GameStore
             Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7} {4,-8}", "Id", "Назва", "Жанр", "Рейтинг", "Ціна");
             Console.WriteLine(new string('-', 65));
 
-            foreach (var g in Games)
+            foreach (var g in games)
             {
                 PrintGameReport(g);
                 total += (double)g.Price;
-                if (g.Price < minPrice) minPrice = g.Price;
-                if (g.Price > maxPrice) maxPrice = g.Price;
+                if (g.Price < minPrice)
+                {
+                    minPrice = g.Price;
+                }
+
+                if (g.Price > maxPrice)
+                {
+                    maxPrice = g.Price;
+                }
             }
 
-            double average = total / Games.Count;
+            double average = total / games.Count;
 
             Console.WriteLine(new string('-', 65));
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Підсумки:");
-            Console.WriteLine($"Кількість ігор: {Games.Count}");
+            Console.WriteLine($"Кількість ігор: {games.Count}");
             Console.WriteLine($"Загальна сума: {total:F2} грн");
             Console.WriteLine($"Середня ціна: {average:F2} грн");
             Console.WriteLine($"Мінімальна ціна: {minPrice:F2} грн");
@@ -1227,7 +1343,6 @@ namespace GameStore
             Console.ReadKey(true);
         }
 
-
         /// <summary>
         /// Безпечно зчитує ціле число з консолі в заданому діапазоні.
         /// </summary>
@@ -1235,7 +1350,7 @@ namespace GameStore
         /// <param name="min">Мінімальне допустиме значення.</param>
         /// <param name="max">Максимальне допустиме значення.</param>
         /// <returns>Введене коректне число.</returns>
-        static int ReadInt(string message, int min, int max)
+        private static int ReadInt(string message, int min, int max)
         {
             int result;
             while (true)
@@ -1257,8 +1372,10 @@ namespace GameStore
                     Console.ResetColor();
                     continue;
                 }
+
                 break;
             }
+
             return result;
         }
 
@@ -1267,7 +1384,7 @@ namespace GameStore
         /// </summary>
         /// <param name="message">Текст запрошення для користувача.</param>
         /// <returns>Введений користувачем рядок.</returns>
-        static string ReadString(string message)
+        private static string ReadString(string message)
         {
             Console.Write(message);
             return Console.ReadLine();
@@ -1278,7 +1395,7 @@ namespace GameStore
         /// Використовується при пошуку та фільтрації.
         /// </summary>
         /// <param name="g">Об'єкт гри для виведення.</param>
-        static void PrintGame(Game g)
+        private static void PrintGame(Game g)
         {
             Console.WriteLine($"Id: {g.Id} | Назва: {g.Name} | Жанр: {g.Genre} | Рейтинг: {g.Rating} | Ціна: {g.Price:F2} грн");
         }
@@ -1287,7 +1404,7 @@ namespace GameStore
         /// Виводить інформацію про одного клієнта в рядок.
         /// </summary>
         /// <param name="c">Об'єкт клієнта.</param>
-        static void PrintClient(Client c)
+        private static void PrintClient(Client c)
         {
             Console.WriteLine($"Id: {c.Id} | Ім'я: {c.Name} | Email: {c.Email}");
         }
@@ -1297,7 +1414,7 @@ namespace GameStore
         /// Використовується в методі Report для генерації фінальної таблиці.
         /// </summary>
         /// <param name="g">Об'єкт гри.</param>
-        static void PrintGameReport(Game g)
+        private static void PrintGameReport(Game g)
         {
             Console.WriteLine("{0,-5} {1,-25} {2,-15} {3,-7:F1} {4,-8:F2}", g.Id, g.Name, g.Genre, g.Rating, g.Price);
         }
@@ -1308,7 +1425,7 @@ namespace GameStore
         /// </summary>
         /// <param name="list">Вхідний список ігор.</param>
         /// <returns>Новий відсортований список ігор.</returns>
-        static List<Game> BubbleSortGamesByPrice(List<Game> list)
+        private static List<Game> BubbleSortGamesByPrice(List<Game> list)
         {
             List<Game> sortedList = new List<Game>(list);
 
@@ -1324,6 +1441,7 @@ namespace GameStore
                     }
                 }
             }
+
             return sortedList;
         }
 
@@ -1333,7 +1451,7 @@ namespace GameStore
         /// </summary>
         /// <param name="list">Вхідний список клієнтів.</param>
         /// <returns>Новий відсортований список клієнтів.</returns>
-        static List<Client> BubbleSortClientsByName(List<Client> list)
+        private static List<Client> BubbleSortClientsByName(List<Client> list)
         {
             List<Client> sortedList = new List<Client>(list);
 
@@ -1349,6 +1467,7 @@ namespace GameStore
                     }
                 }
             }
+
             return sortedList;
         }
 
@@ -1358,7 +1477,7 @@ namespace GameStore
         /// </summary>
         /// <param name="attempts">Кількість доступних спроб для введення пароля.</param>
         /// <returns>True, якщо вхід успішний; інакше False.</returns>
-        static bool LoginUser(int attempts)
+        private static bool LoginUser(int attempts)
         {
             do
             {
@@ -1384,7 +1503,8 @@ namespace GameStore
                     Console.WriteLine($"\nНевірний email або пароль. Залишилось спроб: {attempts}\n");
                     Console.ResetColor();
                 }
-            } while (attempts > 0);
+            }
+            while (attempts > 0);
 
             return false;
         }
@@ -1395,7 +1515,7 @@ namespace GameStore
         /// </summary>
         /// <param name="attempts">Кількість спроб для підтвердження пароля.</param>
         /// <returns>Результат автоматичного входу після успішної реєстрації.</returns>
-        static bool RegisterUser(int attempts)
+        private static bool RegisterUser(int attempts)
         {
             Console.Clear();
             Console.Clear();
@@ -1403,7 +1523,7 @@ namespace GameStore
             Console.WriteLine("=== Реєстрація нового користувача ===\n");
             Console.ResetColor();
 
-            string email = "";
+            string email = string.Empty;
             bool emailValid = false;
 
             while (!emailValid)
@@ -1432,7 +1552,7 @@ namespace GameStore
             string password = ReadString("Введіть пароль: ");
 
             int confirmAttempts = 3;
-            string passwordConfirm = "";
+            string passwordConfirm = string.Empty;
             bool passwordMatches = false;
 
             while (confirmAttempts > 0 && !passwordMatches)
@@ -1478,7 +1598,5 @@ namespace GameStore
 
             return LoginUser(attempts);
         }
-
     }
 }
-

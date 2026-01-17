@@ -6,12 +6,8 @@ namespace GameStore.Models
     /// </summary>
     public class Client
     {
-        public int Id;
-        public string Name;
-        public string Email;
-
         /// <summary>
-        /// Ініціалізує новий екземпляр клієнта.
+        /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
         /// <param name="id">Унікальний ідентифікатор у системі.</param>
         /// <param name="name">Повне ім'я або псевдонім клієнта.</param>
@@ -22,6 +18,12 @@ namespace GameStore.Models
             Name = name;
             Email = email;
         }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Email { get; set; }
 
         /// <summary>
         /// Перевіряє, чи є об'єкт клієнта коректним (чи заповнене ім'я).
